@@ -24,13 +24,13 @@ class DishDetail extends Component {
             );
     }
 
-    renderComments(dish) {
-        if (dish != null){
-            const menu = Object.values(dish.comments).map((x) => {
+    renderComments(comments) {
+        if (comments != null){
+            const menu = comments.map((x) => {
                 return (
                     <ul class="list-unstyled">
                         <li>{x.comment}</li>
-                        <li>--{x.author}, {x.date}</li>
+                        <li>--{x.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(x.date)))}</li>
                     </ul>
                 );
             });
@@ -50,16 +50,26 @@ class DishDetail extends Component {
     }
 
     render() {
-        return (
-            <div className="row">
-                <div  className="col-12 col-md-5 m-1">
-                    {this.renderDish(this.props.selectedDish)}
+		if (this.props.dish) {
+            return (
+              
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12 col-md-5 m-1">
+                            {this.renderDish(this.props.dish)}
+                        </div>
+                        <div className="col-12 col-md-5 m-1">
+                            {this.renderComments(this.props.dish.comments)}
+                        </div>
+                    </div>
                 </div>
-                <div  className="col-12 col-md-5 m-1">
-                    {this.renderComments(this.props.selectedDish)}
-                </div>
-            </div>
-        );
+            );
+        }
+        else {
+            return (
+                <div></div>
+            );
+        }
     }
 }
 
